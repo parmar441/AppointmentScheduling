@@ -77,7 +77,7 @@ namespace ClinicManagement.Persistence.Repositories
         {
             DateTime today = DateTime.Now.Date;
             return _context.Appointments
-                .Where(d => d.Doctor.PhysicianId == userId && d.StartDateTime >= today && d.Status==true)
+                .Where(d => d.Doctor.PhysicianId == userId && d.StartDateTime >= today && d.Status == true)
                 .Include(p => p.Patient)
                 .OrderBy(d => d.StartDateTime)
                 .ToList();
@@ -159,5 +159,10 @@ namespace ClinicManagement.Persistence.Repositories
             _context.Appointments.Add(appointment);
         }
 
+        public void Remove(Appointment appointment)
+        {
+            _context.Appointments.Remove(appointment);
+            _context.SaveChanges();
+        }
     }
 }
