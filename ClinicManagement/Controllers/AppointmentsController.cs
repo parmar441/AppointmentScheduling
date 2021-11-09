@@ -95,6 +95,15 @@ namespace ClinicManagement.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Remove(int id)
+        {
+            var appointment = _unitOfWork.Appointments.GetAppointment(id);
+
+            _unitOfWork.Appointments.Remove(appointment);
+
+            return RedirectToAction("Index", "Appointments");
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(AppointmentFormViewModel viewModel)

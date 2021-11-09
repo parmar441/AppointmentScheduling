@@ -19,6 +19,7 @@ namespace ClinicManagement.Core.Repositories
         int CountAppointments(int id);
         Appointment GetAppointment(int id);
         void Add(Appointment appointment);
+        void Remove(Appointment appointment);
 
     }
 }
