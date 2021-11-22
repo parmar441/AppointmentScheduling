@@ -1116,6 +1116,7 @@
     <Content Include="Views\Appointments\_AppointmentPartial.cshtml" />
     <Content Include="Views\Attendances\_AttendancePartial.cshtml" />
     <Content Include="Views\Doctors\DoctorProfile.cshtml" />
+    <Content Include="Views\Shared\_PatientNav.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -17,72 +17,98 @@
                     <span class="section">Add Patient</span>
                     <div class="form-group">
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Name <span class="required">*</span></label>
-                        <div class="col-md-6 col-sm-6 col-xs-12"> 
+                        <div class="col-md-6 col-sm-6 col-xs-12">
                             @Html.TextBoxFor(m => m.Name, new { @class = "form-control col-md-7 col-xs-12", autofocus="true" })
                             @Html.ValidationMessageFor(m => m.Name)
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.DropDownListFor(m => m.Sex, Model.GendersList, new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.Sex)
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">BirthDate <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control col-md-7 col-xs-12 datepicker " })
+                            @Html.ValidationMessageFor(m => m.BirthDate)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Height</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(m => m.Height, new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.Height)
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Weight</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(m => m.Weight, new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.Weight)
+                        </div>
+                    </div>
+
+                    <div class=" form-group">
+                        <label class="control-label col-sm-3 col-xs-12">Phone <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+
+                            @Html.TextBoxFor(m => m.Phone, new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.Phone)
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Address <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(m => m.Address, new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.Address)
+                        </div>
+                    </div>
+
+                    <div class=" form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">City <span class="required">*</span></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.DropDownListFor(m => m.City, new SelectList(Model.Cities, "Id", "Name"), "Select", new { @class = "form-control col-md-7 col-xs-12" })
+                            @Html.ValidationMessageFor(m => m.City)
+                        </div>
+                    </div>
+
+                   // @**@
                         <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.DropDownListFor(m => m.Sex, Model.GendersList, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.Sex)
-                            </div>
+                        <label class="control-label col-sm-3 col-xs-12">Email</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.TextBoxFor(m => m.RegisterViewModel.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.RegisterViewModel.Email)
                         </div>
+                    </div>
 
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">BirthDate <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.TextBoxFor(m => m.BirthDate, new { @class = "form-control col-md-7 col-xs-12 datepicker " })
-                                @Html.ValidationMessageFor(m => m.BirthDate)
-                            </div>
+                    <div class="form-group">
+                     <label class="control-label col-sm-3 col-xs-12">Password</label>
+                     <div class="col-md-6 col-sm-6 col-xs-12">
+                         @Html.PasswordFor(m => m.RegisterViewModel.Password, new { @class = "form-control" })
+                         @Html.ValidationMessageFor(m => m.RegisterViewModel.Password)
+                     </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-3 col-xs-12">Confirm Password</label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            @Html.PasswordFor(m => m.RegisterViewModel.ConfirmPassword, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.RegisterViewModel.ConfirmPassword)
                         </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Height</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.TextBoxFor(m => m.Height, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.Height)
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Weight</label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.TextBoxFor(m => m.Weight, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.Weight)
-                            </div>
-                        </div>
+                    </div>
+                    //   @* *@
 
-                        <div class=" form-group">
-                            <label class="control-label col-sm-3 col-xs-12">Phone <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-
-                                @Html.TextBoxFor(m => m.Phone, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.Phone)
-                            </div>
+                    <div class="ln_solid"></div>
+                    <div class="form-group">
+                        <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
+                            <button type="submit" class="btn btn-success">Save</button>
                         </div>
-
-
-                        <div class="form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">Address <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.TextBoxFor(m => m.Address, new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.Address)
-                            </div>
-                        </div>
-
-                        <div class=" form-group">
-                            <label class="control-label col-md-3 col-sm-3 col-xs-12">City <span class="required">*</span></label>
-                            <div class="col-md-6 col-sm-6 col-xs-12">
-                                @Html.DropDownListFor(m => m.City, new SelectList(Model.Cities, "Id", "Name"), "Select", new { @class = "form-control col-md-7 col-xs-12" })
-                                @Html.ValidationMessageFor(m => m.City)
-                            </div>
-                        </div>
-                            <div class="ln_solid"></div>
-                            <div class="form-group">
-                                <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-4">
-                                    <button type="submit" class="btn btn-success">Save</button>
-                                </div>
-                            </div>
+                    </div>
 
                 }
 

@@ -13,5 +13,6 @@ namespace ClinicManagement.Core.Repositories
         //IQueryable<Patient> GetPatientQuery(string query);
         void Add(Patient patient);
         void Remove(Patient patient);
+        Patient GetProfile(string userId);
     }
 }

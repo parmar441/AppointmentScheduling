@@ -45,7 +45,7 @@ namespace ClinicManagement.Core.ViewModel
 
         public IEnumerable<City> Cities { get; set; }
 
-
+        public RegisterViewModel RegisterViewModel { get; set; }
 
         public string Action
         {

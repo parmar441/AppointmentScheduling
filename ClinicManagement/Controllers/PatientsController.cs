@@ -4,10 +4,11 @@ using System.Web.Mvc;
 using ClinicManagement.Core;
 using ClinicManagement.Core.Models;
 using ClinicManagement.Core.ViewModel;
+using Microsoft.AspNet.Identity;
 
 namespace ClinicManagement.Controllers
 {
-    [Authorize(Roles = RoleName.DoctorRoleName + "," + RoleName.AdministratorRoleName)]
+    [Authorize(Roles = RoleName.DoctorRoleName + "," + RoleName.AdministratorRoleName + ","+RoleName.PatientRoleName )]
     public class PatientsController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -130,11 +131,18 @@ namespace ClinicManagement.Controllers
             patientInDb.CityId = viewModel.City;
 
             _unitOfWork.Complete();
-            return RedirectToAction("Index", "Patients")
-;
+            return RedirectToAction("Index", "Patients");
         }
 
-
-
+        public ActionResult PatientProfile()
+        {
+            var userId = User.Identity.GetUserId();
+            var viewModel = new PatientDetailViewModel
+            {
+                Patient = _unitOfWork.Patients.GetProfile(userId),
+                Appointments = _unitOfWork.Appointments.GetUpcommingAppointments(userId),
+            };
+            return View(viewModel);
+        }
     }
 }

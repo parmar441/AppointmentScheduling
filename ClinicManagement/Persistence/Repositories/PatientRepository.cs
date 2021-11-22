@@ -64,5 +64,10 @@ namespace ClinicManagement.Persistence.Repositories
         {
             _context.Patients.Remove(patient);
         }
+        public Patient GetProfile(string userId)
+        {
+            return _context.Patients
+                .SingleOrDefault(d => d.Id == int.Parse(userId));
+        }
     }
 }
