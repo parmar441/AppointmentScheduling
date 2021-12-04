@@ -39,7 +39,7 @@ namespace ClinicManagement.Controllers
             var viewModel = new DoctorDetailViewModel
             {
                 Doctor = _unitOfWork.Doctors.GetProfile(userId),
-                Appointments = _unitOfWork.Appointments.GetUpcommingAppointments(userId),
+                Appointments = _unitOfWork.Appointments.GetAppointmentByDoctor(_unitOfWork.Doctors.GetProfile(userId).Id) //.GetUpcommingAppointments(userId),
             };
             return View(viewModel);
         }
