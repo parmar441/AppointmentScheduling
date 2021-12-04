@@ -37,6 +37,7 @@ namespace ClinicManagement.Persistence.Repositories
                 .Where(p => p.PatientId == id)
                 .Include(p => p.Patient)
                 .Include(d => d.Doctor)
+               // .Include(e => e.Attendance)
                 .ToList();
         }
         /// <summary>

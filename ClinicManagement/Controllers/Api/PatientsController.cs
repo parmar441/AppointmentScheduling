@@ -76,19 +76,15 @@ namespace ClinicManagement.Controllers.Api
             return appointment;
         }
 
-        [Route("~/api/GetAppointmentsByDoctorId/")]
-        [HttpGet]
-        public IEnumerable<Appointment> GetAppointmentDoctor(int id)
-        {
-            var appointment = _unitOfWork.Appointments.GetAppointmentByDoctor(id);
-            return appointment;
-        }
-        [Route("~/api/GetAppointmentsByDate/")]
-        [HttpGet]
-        public IEnumerable<Appointment> GetAppointmentsByDate(DateTime date)
-        {
-            var appointment = _unitOfWork.Appointments.GetDaillyAppointments(date);
-            return appointment;
-        }
+        //[Route("~/api/GetAppointmentsByDate/")]
+        //[HttpGet]
+        //public IEnumerable<Appointment> GetAppointmentsByDate(DateTime date)
+        //{
+        //    var appointment = _unitOfWork.Appointments.GetDaillyAppointments(date);
+        //    for(var apt in appointment) { 
+            
+        //    }
+        //    return appointment;
+        //}
     }
 }
