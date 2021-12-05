@@ -130,5 +130,13 @@ namespace ClinicManagement.Controllers.Api
                 return false;
             }
         }
+
+        [Route("~/api/GetMissedAppointments/")]
+        [HttpGet]
+        public IEnumerable<Appointment> GetMissedAppointments()
+        {
+            var appointments = _unitOfWork.Appointments.GetMissedAppointments();
+            return appointments;
+        }
     }
 }

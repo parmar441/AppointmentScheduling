@@ -84,6 +84,16 @@ namespace ClinicManagement.Persistence.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Appointment> GetMissedAppointments()
+        {
+            DateTime today = DateTime.Now.Date;
+            return _context.Appointments
+                .Where(d => d.StartDateTime <= today && d.Status == false)
+                .Include(p => p.Patient)
+                .OrderBy(d => d.StartDateTime)
+                .ToList();
+        }
+
         public IQueryable<Appointment> FilterAppointments(AppointmentSearchVM searchModel)
         {
             var result = _context.Appointments.Include(p => p.Patient).Include(d => d.Doctor).AsQueryable();
