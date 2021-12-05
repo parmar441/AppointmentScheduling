@@ -10,5 +10,8 @@ namespace ClinicManagement.Core.Repositories
         Doctor GetDoctor(int id);
         Doctor GetProfile(string userId);
         void Add(Doctor doctor);
+        IEnumerable<Doctor> GetAllDectors();
+        IEnumerable<Doctor> GetAllDoctorByDepartmentId(int id);
+        Doctor GetDoctorById(int id);
     }
 }

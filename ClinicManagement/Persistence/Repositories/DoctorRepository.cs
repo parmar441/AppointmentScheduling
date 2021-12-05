@@ -23,6 +23,13 @@ namespace ClinicManagement.Persistence.Repositories
                 .ToList();
         }
 
+        public IEnumerable<Doctor> GetAllDectors()
+        {
+            return _context.Doctors
+                .Include(s => s.Specialization)
+                .ToList();
+        }
+
         /// <summary>
         /// Get the available doctors
         /// </summary>
@@ -46,6 +53,21 @@ namespace ClinicManagement.Persistence.Repositories
                 .Include(s => s.Specialization)
                 .Include(u => u.Physician)
                 .SingleOrDefault(d => d.Id == id);
+        }
+
+        public Doctor GetDoctorById(int id)
+        {
+            return _context.Doctors
+                .Include(s => s.Specialization)
+                .SingleOrDefault(d => d.Id == id);
+        }
+
+        public IEnumerable<Doctor> GetAllDoctorByDepartmentId(int id)
+        {
+            return _context.Doctors
+                .Include(s => s.Specialization)
+                .Where(e=> e.SpecializationId == id)
+                .ToList();
         }
 
         public Doctor GetProfile(string userId)
