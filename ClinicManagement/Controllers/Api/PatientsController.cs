@@ -2,6 +2,7 @@
 using ClinicManagement.Core;
 using ClinicManagement.Core.Dto;
 using ClinicManagement.Core.Models;
+using ClinicManagement.Core.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,5 +108,27 @@ namespace ClinicManagement.Controllers.Api
             return doctor;
         }
 
+        [HttpPost]
+        [Route("~/api/EditDoctor/")]
+        public bool Edit([FromUri]DoctorFormViewModel viewModel)
+        {
+            try
+            {
+                var doctorInDb = _unitOfWork.Doctors.GetDoctor(viewModel.Id);
+                doctorInDb.Id = viewModel.Id;
+                doctorInDb.Name = viewModel.Name;
+                doctorInDb.Phone = viewModel.Phone;
+                doctorInDb.Address = viewModel.Address;
+                doctorInDb.IsAvailable = viewModel.IsAvailable;
+                doctorInDb.SpecializationId = viewModel.Specialization;
+
+                _unitOfWork.Complete();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }
