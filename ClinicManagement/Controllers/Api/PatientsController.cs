@@ -158,18 +158,18 @@ namespace ClinicManagement.Controllers.Api
 
                 //Check if the slot is available
                 if (_unitOfWork.Appointments.ValidateAppointment(appointment.StartDateTime, viewModel.Doctor))
-                    success = false; ;
+                {
+                    return new Appointment { Detail = "Appointment slot is already booked" };
+                }
 
                 _unitOfWork.Appointments.Add(appointment);
                 _unitOfWork.Complete();
 
-                return success
-                    ? appointment
-                    : new Appointment { Detail = "Appointment slot is already booked" };
+                return appointment;
             }
             catch (Exception ex)
             {
-                return new Appointment { Detail = ex.Message }; ;
+                return new Appointment { Detail = ex.InnerException.InnerException.Message }; ;
             }
         }
     }
