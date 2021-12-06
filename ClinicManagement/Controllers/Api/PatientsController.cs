@@ -138,5 +138,39 @@ namespace ClinicManagement.Controllers.Api
             var appointments = _unitOfWork.Appointments.GetMissedAppointments();
             return appointments;
         }
+
+        [Route("~/api/CreateAppointments/")]
+        [HttpPost]
+        public Appointment Create([FromUri]AppointmentFormViewModel viewModel)
+        {
+            try
+            {
+                bool success = true;
+                var appointment = new Appointment()
+                {
+                    StartDateTime = viewModel.GetStartDateTime(),
+                    Detail = viewModel.Detail,
+                    Status = false,
+                    PatientId = viewModel.Patient,
+                    Doctor = _unitOfWork.Doctors.GetDoctor(viewModel.Doctor)
+
+                };
+
+                //Check if the slot is available
+                if (_unitOfWork.Appointments.ValidateAppointment(appointment.StartDateTime, viewModel.Doctor))
+                    success = false; ;
+
+                _unitOfWork.Appointments.Add(appointment);
+                _unitOfWork.Complete();
+
+                return success
+                    ? appointment
+                    : new Appointment { Detail = "Appointment slot is already booked" };
+            }
+            catch (Exception ex)
+            {
+                return new Appointment { Detail = ex.Message }; ;
+            }
+        }
     }
 }
