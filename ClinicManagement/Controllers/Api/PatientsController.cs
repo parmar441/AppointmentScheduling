@@ -125,7 +125,7 @@ namespace ClinicManagement.Controllers.Api
                 _unitOfWork.Complete();
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -136,6 +136,8 @@ namespace ClinicManagement.Controllers.Api
         public IEnumerable<Appointment> GetMissedAppointments()
         {
             var appointments = _unitOfWork.Appointments.GetMissedAppointments();
+            if (appointments.Any())
+                return null;
             return appointments;
         }
 
@@ -145,7 +147,6 @@ namespace ClinicManagement.Controllers.Api
         {
             try
             {
-                bool success = true;
                 var appointment = new Appointment()
                 {
                     StartDateTime = viewModel.GetStartDateTime(),

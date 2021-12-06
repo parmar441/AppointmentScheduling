@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Core.Objects;
 using System.Linq;
 using ClinicManagement.Core.Models;
 using ClinicManagement.Core.Repositories;
@@ -142,7 +143,7 @@ namespace ClinicManagement.Persistence.Repositories
         /// <returns></returns>
         public bool ValidateAppointment(DateTime appntDate, int id)
         {
-            return _context.Appointments.Any(a => a.StartDateTime == appntDate && a.DoctorId == id);
+            return _context.Appointments.Any(a => (a.StartDateTime <= appntDate && appntDate <= EntityFunctions.AddMinutes(a.StartDateTime,30) )&& a.DoctorId == id);
         }
         /// <summary>
         /// Get number of appointments for defined patient
