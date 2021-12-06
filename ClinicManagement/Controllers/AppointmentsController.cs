@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Web.Mvc;
 using ClinicManagement.Core;
 using ClinicManagement.Core.Models;
@@ -73,7 +76,34 @@ namespace ClinicManagement.Controllers
 
             _unitOfWork.Appointments.Add(appointment);
             _unitOfWork.Complete();
+
+            var patient = _unitOfWork.Patients.GetPatient(viewModel.Patient);
+            Email("Appointment Booked");
             return RedirectToAction("Index", "Appointments");
+        }
+
+        public static void Email(string htmlString)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("parmarbhavin1012@gmail.com");
+                    mail.To.Add("cg485@njit.edu");
+                    mail.Subject = "Appointment Booked";
+                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.IsBodyHtml = true;
+                  //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("parmarbhavin1012@gmail.com", "Vadodara@123");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                };
+            }
+            catch (Exception ex) { }
         }
 
         public ActionResult Edit(int id)
@@ -100,8 +130,32 @@ namespace ClinicManagement.Controllers
             var appointment = _unitOfWork.Appointments.GetAppointment(id);
 
             _unitOfWork.Appointments.Remove(appointment);
-
+            EmailDelete("Deleted Appointment");
             return RedirectToAction("Index", "Appointments");
+        }
+
+        public static void EmailDelete(string htmlString)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("parmarbhavin1012@gmail.com");
+                    mail.To.Add("cg485@njit.edu");
+                    mail.Subject = "Appointment Deleted";
+                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.IsBodyHtml = true;
+                    //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("parmarbhavin1012@gmail.com", "Vadodara@123");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                };
+            }
+            catch (Exception ex) { }
         }
 
         [HttpPost]
@@ -122,12 +176,38 @@ namespace ClinicManagement.Controllers
             appointmentInDb.Status = viewModel.Status;
             appointmentInDb.PatientId = viewModel.Patient;
             appointmentInDb.DoctorId = viewModel.Doctor;
+            if (_unitOfWork.Appointments.ValidateAppointment(appointmentInDb.StartDateTime, viewModel.Doctor))
+                return View("InvalidAppointment");
 
             _unitOfWork.Complete();
+            EmailEdit("Appointment Edited");
             return RedirectToAction("Index");
 
         }
 
+        public static void EmailEdit(string htmlString)
+        {
+            try
+            {
+                using (MailMessage mail = new MailMessage())
+                {
+                    mail.From = new MailAddress("parmarbhavin1012@gmail.com");
+                    mail.To.Add("cg485@njit.edu");
+                    mail.Subject = "Appointment Edited";
+                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.IsBodyHtml = true;
+                    //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                    using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                    {
+                        smtp.Credentials = new NetworkCredential("parmarbhavin1012@gmail.com", "Vadodara@123");
+                        smtp.EnableSsl = true;
+                        smtp.Send(mail);
+                    }
+                };
+            }
+            catch (Exception ex) { }
+        }
         public ActionResult DoctorsList()
         {
             var doctors = _unitOfWork.Doctors.GetAvailableDoctors();
