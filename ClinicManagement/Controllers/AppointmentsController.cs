@@ -78,11 +78,11 @@ namespace ClinicManagement.Controllers
             _unitOfWork.Complete();
 
             var patient = _unitOfWork.Patients.GetPatient(viewModel.Patient);
-            Email("Appointment Booked");
+            Email("Reminder-Your appointment on", viewModel.Date, patient.Name, appointment.Doctor.Name);
             return RedirectToAction("Index", "Appointments");
         }
 
-        public static void Email(string htmlString)
+        public static void Email(string htmlString, string date, string patientName, string doctorName)
         {
             try
             {
@@ -90,8 +90,8 @@ namespace ClinicManagement.Controllers
                 {
                     mail.From = new MailAddress("parmarbhavin1012@gmail.com");
                     mail.To.Add("cg485@njit.edu");
-                    mail.Subject = "Appointment Booked";
-                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.Subject = htmlString + date;
+                    mail.Body = CreateEmailBody(patientName, doctorName, date);
                     mail.IsBodyHtml = true;
                   //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
 
@@ -106,6 +106,11 @@ namespace ClinicManagement.Controllers
             catch (Exception ex) { }
         }
 
+        public static string CreateEmailBody(string patientName, string doctorName, string dateTime)
+        {
+            string body = "Dear "+ patientName + "," + "\n" + "This is a friendly reminder confirming your appointment with" + doctorName + "on "+ dateTime + ".Please try to arrive 15 minutes early and bring your[IMPORTANT - DOCUMENT]." + "\n\n" + "If you have any questions or you need to reschedule, please call our office at (732)318-1413. Otherwise, we look forward to seeing you on "+ dateTime + ".Have a wonderful day! " + "\n" + "Warm regards," + "\n" + "CS 673";
+            return body;
+        }
         public ActionResult Edit(int id)
         {
             var appointment = _unitOfWork.Appointments.GetAppointment(id);
