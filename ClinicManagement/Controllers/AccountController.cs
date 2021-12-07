@@ -4,16 +4,20 @@ using ClinicManagement.Core.ViewModel;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
+using Newtonsoft.Json;
+using System;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace ClinicManagement.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -224,6 +228,8 @@ namespace ClinicManagement.Controllers
                     //Mapper.Map<DoctorFormViewModel, Doctor>(model, doctor);
                     _unitOfWork.Doctors.Add(doctor);
                     _unitOfWork.Complete();
+                    var specializationName = _unitOfWork.Specializations.GetSpecializationName(doctor.SpecializationId);
+                    postDoctorManagementPortal(specializationName.Name, doctor.Id);
                     return RedirectToAction("Index", "Doctors");
                 }
 
@@ -234,6 +240,31 @@ namespace ClinicManagement.Controllers
 
             // If we got this far, something failed, redisplay form
             return View("DoctorForm", viewModel);
+        }
+
+        public void postDoctorManagementPortal(string specializationName, int doctorId)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var pocoObject = new
+                    {
+                        doctorId = doctorId.ToString(),
+                        departmentName = specializationName
+                    };
+
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    string json = JsonConvert.SerializeObject(pocoObject);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync("https://dry-ocean-01268.herokuapp.com/doctor", data).Result;
+                }
+            }
+            catch (Exception) { }
+
         }
 
         //list users

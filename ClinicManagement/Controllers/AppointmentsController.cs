@@ -83,10 +83,8 @@ namespace ClinicManagement.Controllers
             _unitOfWork.Complete();
 
             var patient = _unitOfWork.Patients.GetPatient(viewModel.Patient);
-            var specializationName = _unitOfWork.Specializations.GetSpecializationName(appointment.Doctor.SpecializationId);
-            Email("Reminder-Your appointment on", viewModel.Date, patient.Name, appointment.Doctor.Name);
+            Email("Reminder-Your appointment on ", viewModel.Date, patient.Name, appointment.Doctor.Name);
             postPatientManagementPortal(appointment.Doctor.Id, patient.Id);
-            postDoctorManagementPortal(specializationName.Name, patient.Id);
             return RedirectToAction("Index", "Appointments");
         }
 
@@ -115,31 +113,6 @@ namespace ClinicManagement.Controllers
 
          }
 
-        public void postDoctorManagementPortal(string specializationName, int patientId)
-        {
-            try
-            {
-                using (var client = new HttpClient())
-                {
-                    var pocoObject = new
-                    {
-                        doctorId = patientId.ToString(),
-                        departmentName = specializationName
-                    };
-
-                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
-                    string json = JsonConvert.SerializeObject(pocoObject);
-
-                    //Needed to setup the body of the request
-                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
-
-                    var response = client.PostAsync("https://dry-ocean-01268.herokuapp.com/doctor", data).Result;
-                }
-            }
-            catch(Exception) { }
-
-        }
-
         public static void Email(string htmlString, string date, string patientName, string doctorName)
          {
             try
@@ -166,7 +139,7 @@ namespace ClinicManagement.Controllers
 
         public static string CreateEmailBody(string patientName, string doctorName, string dateTime)
         {
-            string body = "Dear "+ patientName + "," + "\n" + "This is a friendly reminder confirming your appointment with" + doctorName + "on "+ dateTime + ".Please try to arrive 15 minutes early and bring your[IMPORTANT - DOCUMENT]." + "\n\n" + "If you have any questions or you need to reschedule, please call our office at (732)318-1413. Otherwise, we look forward to seeing you on "+ dateTime + ".Have a wonderful day! " + "\n" + "Warm regards," + "\n" + "CS 673";
+            string body = "<br>Dear "+ patientName + "," + "<br/>" + "This is a friendly reminder confirming your appointment with" + doctorName + "on "+ dateTime + ".Please try to arrive 15 minutes early and bring your[IMPORTANT - DOCUMENT]." + "<br/><br/>" + "If you have any questions or you need to reschedule, please call our office at (732)318-1413. Otherwise, we look forward to seeing you on "+ dateTime + ".Have a wonderful day! " + "<br/><br/>" + "Warm regards," + "<br/>" + "CS 673";
             return body;
         }
         public ActionResult Edit(int id)
@@ -191,13 +164,15 @@ namespace ClinicManagement.Controllers
         public ActionResult Remove(int id)
         {
             var appointment = _unitOfWork.Appointments.GetAppointment(id);
-
+            var doctor = _unitOfWork.Doctors.GetDoctorById(appointment.DoctorId);
+            var patient = _unitOfWork.Patients.GetPatient(appointment.PatientId);
             _unitOfWork.Appointments.Remove(appointment);
-            EmailDelete("Deleted Appointment");
+            EmailDelete("Your appointment on ", appointment.StartDateTime.ToString(), patient.Name, doctor.Name);
+
             return RedirectToAction("Index", "Appointments");
         }
 
-        public static void EmailDelete(string htmlString)
+        public static void EmailDelete(string htmlString, string date, string patientName, string doctorName)
         {
             try
             {
@@ -205,10 +180,9 @@ namespace ClinicManagement.Controllers
                 {
                     mail.From = new MailAddress("parmarbhavin1012@gmail.com");
                     mail.To.Add("cg485@njit.edu");
-                    mail.Subject = "Appointment Deleted";
-                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.Subject = htmlString + date + " Deleted";
+                    mail.Body = "<br>Dear " + patientName + "," + "<br/>" + "You have cancelled your appointment with " + doctorName + " on " + date + "..Have a wonderful day! " + "<br/><br/>" + "Warm regards," + "<br/>" + "CS 673"; 
                     mail.IsBodyHtml = true;
-                    //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
 
                     using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
                     {
@@ -243,12 +217,15 @@ namespace ClinicManagement.Controllers
                 return View("InvalidAppointment");
 
             _unitOfWork.Complete();
-            EmailEdit("Appointment Edited");
+
+            var patient = _unitOfWork.Patients.GetPatient(appointmentInDb.PatientId);
+            var doctor = _unitOfWork.Doctors.GetDoctorById(appointmentInDb.DoctorId);
+            EmailEdit("Appointment Edited on ", appointmentInDb.StartDateTime.ToString(), patient.Name, doctor.Name);
             return RedirectToAction("Index");
 
         }
 
-        public static void EmailEdit(string htmlString)
+        public static void EmailEdit(string htmlString, string date, string patientName, string doctorName)
         {
             try
             {
@@ -256,8 +233,8 @@ namespace ClinicManagement.Controllers
                 {
                     mail.From = new MailAddress("parmarbhavin1012@gmail.com");
                     mail.To.Add("cg485@njit.edu");
-                    mail.Subject = "Appointment Edited";
-                    mail.Body = "<h1>Appointment Booked</h1>";
+                    mail.Subject = htmlString + date;
+                    mail.Body = "<br>Dear " + patientName + "," + "<br/>" + "This is a friendly reminder confirming your appointment with" + doctorName + "on " + date + ".Please try to arrive 15 minutes early and bring your[IMPORTANT - DOCUMENT]." + "<br/><br/>" + "If you have any questions or you need to reschedule, please call our office at (732)318-1413. Otherwise, we look forward to seeing you on " + date + ".Have a wonderful day! " + "<br/><br/>" + "Warm regards," + "<br/>" + "CS 673"; ;
                     mail.IsBodyHtml = true;
                     //  mail.Attachments.Add(new Attachment("C:\\file.zip"));
 
