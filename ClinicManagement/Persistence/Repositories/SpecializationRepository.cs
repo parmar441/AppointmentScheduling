@@ -18,5 +18,10 @@ namespace ClinicManagement.Persistence.Repositories
         {
             return Context.Specializations.ToList();
         }
+
+        public Specialization GetSpecializationName(int id)
+        {
+            return Context.Specializations.Where(a=>a.Id == id).FirstOrDefault();
+        }
     }
 }

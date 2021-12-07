@@ -1,11 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Text;
 using System.Web.Mvc;
 using ClinicManagement.Core;
 using ClinicManagement.Core.Models;
 using ClinicManagement.Core.ViewModel;
+using Newtonsoft.Json;
 
 namespace ClinicManagement.Controllers
 {
@@ -73,17 +78,70 @@ namespace ClinicManagement.Controllers
             //Check if the slot is available
             if (_unitOfWork.Appointments.ValidateAppointment(appointment.StartDateTime, viewModel.Doctor))
                 return View("InvalidAppointment");
-
+           
             _unitOfWork.Appointments.Add(appointment);
             _unitOfWork.Complete();
 
             var patient = _unitOfWork.Patients.GetPatient(viewModel.Patient);
+            var specializationName = _unitOfWork.Specializations.GetSpecializationName(appointment.Doctor.SpecializationId);
             Email("Reminder-Your appointment on", viewModel.Date, patient.Name, appointment.Doctor.Name);
+            postPatientManagementPortal(appointment.Doctor.Id, patient.Id);
+            postDoctorManagementPortal(specializationName.Name, patient.Id);
             return RedirectToAction("Index", "Appointments");
         }
 
-        public static void Email(string htmlString, string date, string patientName, string doctorName)
+        public void postPatientManagementPortal(int doctorId, int patientId)
         {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var pocoObject = new
+                    {
+                        doctorId = doctorId.ToString(),
+                        patientId = patientId.ToString()
+                    };
+
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    string json = JsonConvert.SerializeObject(pocoObject);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync("https://dry-ocean-01268.herokuapp.com/practicemanagement", data).Result;
+                }
+            }
+            catch (Exception) { }
+
+         }
+
+        public void postDoctorManagementPortal(string specializationName, int patientId)
+        {
+            try
+            {
+                using (var client = new HttpClient())
+                {
+                    var pocoObject = new
+                    {
+                        doctorId = patientId.ToString(),
+                        departmentName = specializationName
+                    };
+
+                    //Converting the object to a json string. NOTE: Make sure the object doesn't contain circular references.
+                    string json = JsonConvert.SerializeObject(pocoObject);
+
+                    //Needed to setup the body of the request
+                    StringContent data = new StringContent(json, Encoding.UTF8, "application/json");
+
+                    var response = client.PostAsync("https://dry-ocean-01268.herokuapp.com/doctor", data).Result;
+                }
+            }
+            catch(Exception) { }
+
+        }
+
+        public static void Email(string htmlString, string date, string patientName, string doctorName)
+         {
             try
             {
                 using (MailMessage mail = new MailMessage())
