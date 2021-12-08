@@ -13,7 +13,7 @@ namespace ClinicManagement.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "202110302332195_InitialDb"; }
+            get { return "202112080520456_InitialDb"; }
         }
         
         string IMigrationMetadata.Source

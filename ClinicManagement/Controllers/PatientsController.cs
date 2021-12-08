@@ -41,13 +41,13 @@ namespace ClinicManagement.Controllers
         [Authorize]
         public ActionResult Create()
         {
-            //var viewModel = new PatientFormViewModel
-            //{
-            //    Cities = _unitOfWork.Cities.GetCities(),
-            //    Heading = "New Patient"
-            //};
-            //return View("PatientForm", viewModel);
-            return Redirect("https://patient-login.herokuapp.com/sign_up");
+            var viewModel = new PatientFormViewModel
+            {
+                Cities = _unitOfWork.Cities.GetCities(),
+                Heading = "New Patient"
+            };
+            return View("PatientForm", viewModel);
+            // return Redirect("https://patient-login.herokuapp.com/sign_up");
         }
 
 
@@ -56,33 +56,33 @@ namespace ClinicManagement.Controllers
         public ActionResult Create(PatientFormViewModel viewModel)
         {
             return Redirect("https://patient-login.herokuapp.com/sign_up");
-            //if (!ModelState.IsValid)
-            //{
-            //    viewModel.Cities = _unitOfWork.Cities.GetCities();
-            //    return View("PatientForm", viewModel);
+            if (!ModelState.IsValid)
+            {
+                viewModel.Cities = _unitOfWork.Cities.GetCities();
+                return View("PatientForm", viewModel);
 
-            //}
+            }
 
-            //var patient = new Patient
-            //{
-            //    Name = viewModel.Name,
-            //    Phone = viewModel.Phone,
-            //    Address = viewModel.Address,
-            //    DateTime = DateTime.Now,
-            //    BirthDate = viewModel.GetBirthDate(),
-            //    Height = viewModel.Height,
-            //    Weight = viewModel.Weight,
-            //    CityId = viewModel.City,
-            //    Sex = viewModel.Sex,
-            //    Token = (2018 + _unitOfWork.Patients.GetPatients().Count()).ToString().PadLeft(7, '0')
-            //};
+            var patient = new Patient
+            {
+                Name = viewModel.Name,
+                Phone = viewModel.Phone,
+                Address = viewModel.Address,
+                DateTime = DateTime.Now,
+                BirthDate = viewModel.GetBirthDate(),
+                Height = viewModel.Height,
+                Weight = viewModel.Weight,
+                CityId = viewModel.City,
+                Sex = viewModel.Sex,
+                Token = (2018 + _unitOfWork.Patients.GetPatients().Count()).ToString().PadLeft(7, '0')
+            };
 
-            //_unitOfWork.Patients.Add(patient);
-            //_unitOfWork.Complete();
-            //return RedirectToAction("Index", "Patients");
+            _unitOfWork.Patients.Add(patient);
+            _unitOfWork.Complete();
+            return RedirectToAction("Index", "Patients");
 
-            // TODO: BUG redirect to detail 
-            //return RedirectToAction("Details", new { id = viewModel.Id });
+       // TODO: BUG redirect to detail
+            return RedirectToAction("Details", new { id = viewModel.Id });
         }
 
 

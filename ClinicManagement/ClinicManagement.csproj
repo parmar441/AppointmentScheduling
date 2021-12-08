@@ -311,9 +311,9 @@
     <Compile Include="Core\ViewModel\AppointmentFormViewModel.cs" />
     <Compile Include="Core\ViewModel\DoctorDetailViewModel.cs" />
     <Compile Include="Core\ViewModel\ValidDate.cs" />
-    <Compile Include="Migrations\202110302332195_InitialDb.cs" />
-    <Compile Include="Migrations\202110302332195_InitialDb.Designer.cs">
-      <DependentUpon>202110302332195_InitialDb.cs</DependentUpon>
+    <Compile Include="Migrations\202112080520456_InitialDb.cs" />
+    <Compile Include="Migrations\202112080520456_InitialDb.Designer.cs">
+      <DependentUpon>202112080520456_InitialDb.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Persistence\EntityConfigurations\AppointmentConfiguration.cs" />
@@ -1181,8 +1181,8 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\202110302332195_InitialDb.resx">
-      <DependentUpon>202110302332195_InitialDb.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\202112080520456_InitialDb.resx">
+      <DependentUpon>202112080520456_InitialDb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
