@@ -55,7 +55,7 @@ namespace ClinicManagement.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(PatientFormViewModel viewModel)
         {
-            return Redirect("https://patient-login.herokuapp.com/sign_up");
+           // return Redirect("https://patient-login.herokuapp.com/sign_up");
             if (!ModelState.IsValid)
             {
                 viewModel.Cities = _unitOfWork.Cities.GetCities();
