@@ -21,6 +21,7 @@ namespace ClinicManagement.Core.Repositories
         void Add(Appointment appointment);
         void Remove(Appointment appointment);
         IEnumerable<Appointment> GetMissedAppointments();
+        IEnumerable<Appointment> GetAppointments1();
 
     }
 }

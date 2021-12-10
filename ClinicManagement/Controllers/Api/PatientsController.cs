@@ -65,7 +65,7 @@ namespace ClinicManagement.Controllers.Api
         [HttpGet]
         public IEnumerable<Appointment> Index()
         {
-            var appointments = _unitOfWork.Appointments.GetAppointments();
+            var appointments = _unitOfWork.Appointments.GetAppointments1();
             return appointments;
         }
 

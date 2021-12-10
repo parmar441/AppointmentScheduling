@@ -20,6 +20,14 @@ namespace ClinicManagement.Persistence.Repositories
         /// Get all appointments
         /// </summary>
         /// <returns></returns>
+        public IEnumerable<Appointment> GetAppointments1()
+        {
+            return _context.Appointments
+              //  .Include(p => p.Patient)
+                .Include(d => d.Doctor)
+                .ToList();
+        }
+
         public IEnumerable<Appointment> GetAppointments()
         {
             return _context.Appointments
@@ -27,6 +35,7 @@ namespace ClinicManagement.Persistence.Repositories
                 .Include(d => d.Doctor)
                 .ToList();
         }
+
         /// <summary>
         /// Get appointments for single patient
         /// </summary>
