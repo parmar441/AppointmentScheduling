@@ -6,8 +6,8 @@ phases:
       dotnet: 5.0
       #dotnet: latest - Latest resolve to 3.1, check this issue https://github.com/aws/aws-codebuild-docker-images/issues/414
    
-  build:
-    commands:
+ # build:
+   # commands:
       - echo Build started on `date`
       - dotnet build ./ClinicManagement/ClinicManagement.csproj
       # echo Test started on `date`
