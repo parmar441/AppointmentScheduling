@@ -9,14 +9,14 @@ phases:
   pre_build:
     commands:
       - echo Restore started on `date`
-      - dotnet restore ClinicManagement/ClinicManagement.csproj
+      - dotnet restore ./ClinicManagement/ClinicManagement.csproj
       
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build ClinicManagement/ClinicManagement.csproj
+      - dotnet build ./ClinicManagement/ClinicManagement.csproj
       # echo Test started on `date`
-      # dotnet test ClinicManagement/ClinicManagement.csproj
+      # dotnet test ./ClinicManagement/ClinicManagement.csproj
       
   post_build:
     commands:
