@@ -9,20 +9,20 @@ phases:
   pre_build:
     commands:
       - echo Restore started on `date`
-      - dotnet restore ./ClinicManagement/ClinicManagement.csproj
+      - dotnet restore ./ClinicManagement.csproj
       
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build ./ClinicManagement/ClinicManagement.csproj
+      - dotnet build ./ClinicManagement.csproj
       # echo Test started on `date`
-      # dotnet test ./ClinicManagement/ClinicManagement.csproj
+      # dotnet test ./ClinicManagement.csproj
       
   post_build:
     commands:
       - echo Publish started on `date`
       # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
-      - dotnet publish -c Release -r linux-x64 -o ./ClinicManagement/ClinicManagement.csproj
+      - dotnet publish -c Release -r linux-x64 -o ./ClinicManagement.csproj
       
 artifacts:
   files:
