@@ -15,8 +15,8 @@ phases:
     commands:
       - echo Build started on `date`
       - dotnet build ClinicManagement/ClinicManagement.csproj
-      - echo Test started on `date`
-      - dotnet test ClinicManagement/ClinicManagement.csproj
+      # echo Test started on `date`
+      # dotnet test ClinicManagement/ClinicManagement.csproj
       
   post_build:
     commands:
