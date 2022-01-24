@@ -6,6 +6,11 @@ phases:
       dotnet: 5.0
       #dotnet: latest - Latest resolve to 3.1, check this issue https://github.com/aws/aws-codebuild-docker-images/issues/414
    
+   build:
+    commands:
+      - echo Publish started on `date`
+      # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
+      - dotnet publish -c Release -r linux-x64 -o ./ClinicManagement/ClinicManagement.csproj
  # build:
    # commands:
       - echo Build started on `date`
@@ -14,11 +19,6 @@ phases:
       # dotnet test ./ClinicManagement/ClinicManagement.csproj
       
   #post_build:
-  build:
-    commands:
-      - echo Publish started on `date`
-      # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
-      - dotnet publish -c Release -r linux-x64 -o ./ClinicManagement/ClinicManagement.csproj
       
 artifacts:
   files:
