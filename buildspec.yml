@@ -13,7 +13,8 @@ phases:
       # echo Test started on `date`
       # dotnet test ./ClinicManagement/ClinicManagement.csproj
       
-  post_build:
+  #post_build:
+  build:
     commands:
       - echo Publish started on `date`
       # https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/dotnet-linux-platform-bundle-app.html
